@@ -1,14 +1,14 @@
 import 'package:bgg_api/bgg_api.dart';
 import 'package:bgo/src/features/game_add/presentation/game_add_view.dart';
 import 'package:bgo/src/features/game_list/presentation/game_list_provider.dart';
+import 'package:bgo/src/features/game_list/usecase/get_game_info.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class GameList extends StatelessWidget {
   GameList({super.key});
-  static const routeName = '/list';
 
-  final GameListProvider gameListProvider = GameListProvider();
+  final GameListProvider gameListProvider = GameListProvider()..init();
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +36,16 @@ class GameList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // return Navigator.restorablePushNamed(context, GameAdd.routeName);
-          final game =
-              await Navigator.pushNamed<BoardGame?>(context, GameAdd.routeName);
-          if (game != null) gameListProvider.add(game);
+          final gameref = await Navigator.of(context).push(
+            MaterialPageRoute<BoardGameRef?>(builder: (context) => GameAdd()),
+          );
+
+          if (gameref is! BoardGameRef || gameref.id == null) return;
+
+          final game = await GetGameInfo()(gameref.id!);
+          if (game == null) return;
+
+          gameListProvider.add(game);
         },
         tooltip: 'Add Game',
         child: const Icon(Icons.add),

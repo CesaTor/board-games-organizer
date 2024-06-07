@@ -1,6 +1,7 @@
 import 'dart:collection';
-
 import 'package:bgg_api/bgg_api.dart';
+import 'package:bgo/src/core/usecase/get_local_games.dart';
+import 'package:bgo/src/core/usecase/save_local_game.dart';
 import 'package:flutter/material.dart';
 
 class GameListProvider extends ChangeNotifier {
@@ -10,9 +11,22 @@ class GameListProvider extends ChangeNotifier {
   /// An unmodifiable view of the items in the cart.
   UnmodifiableListView<BoardGame> get games => UnmodifiableListView(_games);
 
+  void init() {
+    GetLocalGames()().then((games) {
+      _games.addAll(games);
+      notifyListeners();
+    });
+  }
+
   void add(BoardGame game) {
-    _games.add(game);
-    notifyListeners();
+    SaveLocalGame().call(game).then(
+      (success) {
+        if (success) {
+          _games.add(game);
+          notifyListeners();
+        }
+      },
+    );
   }
 
   void removeAll() {

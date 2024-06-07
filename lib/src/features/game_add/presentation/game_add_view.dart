@@ -14,11 +14,7 @@ class GameAdd extends StatelessWidget {
         title: const Text('Search Game'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: TextField(
-            onChanged: (value) {
-              gameAddProvider.search(value);
-            },
-          ),
+          child: TextField(onChanged: gameAddProvider.search),
         ),
       ),
       body: ListenableBuilder(
@@ -27,19 +23,15 @@ class GameAdd extends StatelessWidget {
           itemCount: gameAddProvider.gameList.length,
           itemBuilder: (context, index) {
             final game = gameAddProvider.gameList[index];
-            return ListTile(
-              title: Text(game.name ?? ''),
-              subtitle: Text(game.yearPublished.toString()),
+            return GestureDetector(
+              onTap: () => Navigator.of(context).pop(game),
+              child: ListTile(
+                title: Text(game.name ?? ''),
+                subtitle: Text(game.yearPublished.toString()),
+              ),
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        tooltip: 'Add Game',
-        child: const Icon(Icons.add),
       ),
     );
   }
