@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class GameAdd extends StatelessWidget {
   GameAdd({super.key});
-  static const routeName = '/add';
 
   final GameAddProvider gameAddProvider = GameAddProvider();
 

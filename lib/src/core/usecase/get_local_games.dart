@@ -3,8 +3,13 @@ import 'package:bgo/src/core/core.dart';
 import 'package:isar/isar.dart';
 
 class GetLocalGames {
-  Future<Iterable<BoardGame>> call() async {
-    return (await isar.boardGameDbEntrys.where().findAll())
-        .map((e) => e.toBoardGame());
+  Future<Iterable<BoardGame>> call({bool sortByName = false}) async {
+    if (sortByName) {
+      return (await isar.boardGameDbEntrys.where().sortByName().findAll())
+          .map((e) => e.toBoardGame());
+    } else {
+      return (await isar.boardGameDbEntrys.where().findAll())
+          .map((e) => e.toBoardGame());
+    }
   }
 }
