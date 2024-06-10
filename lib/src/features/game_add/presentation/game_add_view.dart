@@ -13,7 +13,10 @@ class GameAdd extends StatelessWidget {
         title: const Text('Search Game'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: TextField(onChanged: gameAddProvider.search),
+          child: TextField(
+            onChanged: gameAddProvider.search,
+            autofocus: true,
+          ),
         ),
       ),
       body: ListenableBuilder(
