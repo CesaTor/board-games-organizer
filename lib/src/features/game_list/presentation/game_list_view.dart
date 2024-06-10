@@ -3,9 +3,11 @@ import 'package:bgo/src/core/core.dart';
 import 'package:bgo/src/features/game_add/presentation/game_add_view.dart';
 import 'package:bgo/src/features/game_detail/presentation/game_detail_view.dart';
 import 'package:bgo/src/features/game_list/presentation/game_list_provider.dart';
+import 'package:bgo/src/features/game_list/usecase/delete_local_game.dart';
 import 'package:bgo/src/features/game_list/usecase/get_game_info.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class GameList extends StatelessWidget {
   GameList({super.key});
@@ -22,27 +24,45 @@ class GameList extends StatelessWidget {
           itemCount: gameListProvider.games.length,
           itemBuilder: (context, index) {
             final game = gameListProvider.games[index];
-            return GestureDetector(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute<BoardGameRef>(
-                  builder: (context) => GameDetail(game: game),
-                ),
+            return Slidable(
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (_) {
+                      DeleteLocalGame()
+                          .call(game)
+                          .then((value) => gameListProvider.init());
+                    },
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Delete',
+                  ),
+                ],
               ),
-              child: ListTile(
-                leading: SizedBox(
-                  width: 100,
-                  child: CachedNetworkImage(
-                    imageUrl: game.thumbnail?.toString() ??
-                        "https://placehold.co/400",
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<BoardGameRef>(
+                    builder: (context) => GameDetail(game: game),
                   ),
                 ),
-                title: Text(game.names.first),
-                subtitle: Text(game.yearPublished.toString()),
+                child: ListTile(
+                  leading: SizedBox(
+                    width: 100,
+                    child: CachedNetworkImage(
+                      imageUrl: game.thumbnail?.toString() ??
+                          "https://placehold.co/400",
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  ),
+                  title: Text(game.names.first),
+                  subtitle: Text(game.yearPublished.toString()),
+                ),
               ),
             );
           },

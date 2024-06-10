@@ -12,6 +12,7 @@ class GameListProvider extends ChangeNotifier {
 
   void init() {
     GetLocalGames()().then((games) {
+      _games.clear();
       _games.addAll(games);
       notifyListeners();
     });

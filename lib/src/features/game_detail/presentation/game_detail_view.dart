@@ -39,9 +39,9 @@ class GameDetail extends StatelessWidget {
                     }
                     return Row(
                       children: [
-                        const Text("Place:", style: titleStyle),
+                        const Text("Place: ", style: titleStyle),
                         for (final collection in snapshot.data!)
-                          Text(collection.name ?? ''),
+                          Text('${collection.name}, '),
                       ],
                     );
                   }),

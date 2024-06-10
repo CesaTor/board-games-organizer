@@ -13,7 +13,7 @@ class MyApp extends StatefulWidget {
     required this.settingsController,
   });
 
-  final SettingsController settingsController;
+  final SettingsController settingsController; 
 
   @override
   State<MyApp> createState() => _MyAppState();
