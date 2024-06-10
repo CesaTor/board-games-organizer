@@ -1,4 +1,5 @@
 import 'package:bgo/src/features/game_add/presentation/game_add_provider.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 
 class GameAdd extends StatelessWidget {
@@ -14,7 +15,13 @@ class GameAdd extends StatelessWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: TextField(
-            onChanged: gameAddProvider.search,
+            onChanged: (query) {
+              EasyDebounce.debounce(
+                'game_search',
+                Durations.short2,
+                () => gameAddProvider.search(query),
+              );
+            },
             autofocus: true,
           ),
         ),

@@ -45,6 +45,7 @@ class GameCollections extends StatelessWidget {
                       ),
                     ),
                   );
+                  gameCollectionsProvider.init();
                 },
                 child: ListTile(
                   title: Text(collection.name ?? ''),

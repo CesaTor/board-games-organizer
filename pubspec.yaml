@@ -15,6 +15,7 @@ dependencies:
   bgg_api: ^0.8.0
   cached_network_image: ^3.3.1
   dio:
+  easy_debounce: ^2.0.3
   fpdart:
   flutter:
     sdk: flutter

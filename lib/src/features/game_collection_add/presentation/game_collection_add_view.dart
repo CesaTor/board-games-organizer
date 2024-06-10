@@ -31,9 +31,12 @@ class _GameCollectionAddState extends State<GameCollectionAdd> {
           ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(kToolbarHeight),
-            child: TextField(
-              controller: nameController,
-              autofocus: true,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                controller: nameController,
+                autofocus: true,
+              ),
             ),
           ),
         ),
