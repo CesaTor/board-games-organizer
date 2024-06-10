@@ -1,9 +1,6 @@
 import 'dart:collection';
-
-import 'package:bgg_api/bgg_api.dart';
 import 'package:bgo/src/core/core.dart';
 import 'package:bgo/src/core/models/collection_db_entry.dart';
-import 'package:bgo/src/core/usecase/save_local_collection.dart';
 import 'package:bgo/src/features/game_collection_add/usecase/get_filtered_games.dart';
 import 'package:flutter/material.dart';
 
@@ -11,16 +8,28 @@ bool _canSearch = true;
 
 class GameCollectionAddProvider extends ChangeNotifier {
   /// Internal, private state of the cart.
-  final List<BoardGame> _games = [];
-  final List<BoardGame> _selectedGames = [];
+  final List<BoardGameDbEntry> _games = [];
+  final List<BoardGameDbEntry> _selectedGames = [];
   final _searchByName = GetFilteredGames();
+  final CollectionDbEntry? collection;
+
+  GameCollectionAddProvider({this.collection});
 
   /// An unmodifiable view of the items in the cart.
-  UnmodifiableListView<BoardGame> get selectedGames =>
+  UnmodifiableListView<BoardGameDbEntry> get selectedGames =>
       UnmodifiableListView(_selectedGames);
-  UnmodifiableListView<BoardGame> get gameList => UnmodifiableListView(_games);
-  
+  UnmodifiableListView<BoardGameDbEntry> get gameList =>
+      UnmodifiableListView(_games);
+
+  bool contains(BoardGameDbEntry game) {
+    return _selectedGames.any((e) => e.gameId == game.gameId);
+  }
+
   void init() {
+    _selectedGames.clear();
+    _selectedGames.addAll(collection?.games ?? []);
+    notifyListeners();
+
     GetLocalGames()(sortByName: true).then((games) {
       _games.clear();
       _games.addAll(games);
@@ -28,20 +37,21 @@ class GameCollectionAddProvider extends ChangeNotifier {
     });
   }
 
-  void select(BoardGame game, bool value) {
+  void select(BoardGameDbEntry game, bool value) {
     if (value) {
       _selectedGames.add(game);
     } else {
-      _selectedGames.remove(game);
+      _selectedGames.removeWhere((e) => e.gameId == game.gameId);
     }
     notifyListeners();
   }
 
   Future<void> save(String name) async {
-    final CollectionDbEntry collection = CollectionDbEntry(name: name);
-    collection.games.addAll(_selectedGames.map(BoardGameDbEntry.fromBoardGame));
+    final c = collection ?? CollectionDbEntry(name: name);
+    c.games.clear();
+    c.games.addAll(_selectedGames);
 
-    await SaveLocalCollection()(collection);
+    await SaveLocalCollection()(c);
   }
 
   Future<void> search(String name) async {

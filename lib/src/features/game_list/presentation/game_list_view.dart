@@ -1,5 +1,7 @@
 import 'package:bgg_api/bgg_api.dart';
+import 'package:bgo/src/core/core.dart';
 import 'package:bgo/src/features/game_add/presentation/game_add_view.dart';
+import 'package:bgo/src/features/game_detail/presentation/game_detail_view.dart';
 import 'package:bgo/src/features/game_list/presentation/game_list_provider.dart';
 import 'package:bgo/src/features/game_list/usecase/get_game_info.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,16 +22,28 @@ class GameList extends StatelessWidget {
           itemCount: gameListProvider.games.length,
           itemBuilder: (context, index) {
             final game = gameListProvider.games[index];
-            return ListTile(
-              leading: CachedNetworkImage(
-                imageUrl:
-                    game.thumbnail?.toString() ?? "https://placehold.co/400",
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+            return GestureDetector(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<BoardGameRef>(
+                  builder: (context) => GameDetail(game: game),
+                ),
               ),
-              title: Text(game.names.first),
-              subtitle: Text(game.yearPublished.toString()),
+              child: ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: CachedNetworkImage(
+                    imageUrl: game.thumbnail?.toString() ??
+                        "https://placehold.co/400",
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
+                ),
+                title: Text(game.names.first),
+                subtitle: Text(game.yearPublished.toString()),
+              ),
             );
           },
         ),
@@ -45,7 +59,7 @@ class GameList extends StatelessWidget {
           final game = await GetGameInfo()(gameref.id!);
           if (game == null) return;
 
-          gameListProvider.add(game);
+          gameListProvider.add(BoardGameDbEntry.fromBoardGame(game));
         },
         tooltip: 'Add Game',
         child: const Icon(Icons.add),

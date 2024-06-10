@@ -50,35 +50,71 @@ class _MyAppState extends State<MyApp> {
           darkTheme: ThemeData.dark(),
           themeMode: widget.settingsController.themeMode,
           home: Scaffold(
-              body: PageView(
-                controller: controller,
-                children: [
-                  GameList(),
-                  GameCollections(),
-                ],
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.games),
-                    label: 'List',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.collections),
-                    label: 'Collections',
-                  ),
-                ],
-                currentIndex: controller.initialPage,
-                selectedItemColor: Colors.amber[800],
-                onTap: (index) {
-                  controller.animateToPage(index,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut);
-                },
-              )),
-          // GameList(),
+            body: PageView(
+              controller: controller,
+              children: [
+                GameList(),
+                GameCollections(),
+              ],
+            ),
+            bottomNavigationBar: _NavBar(
+              controller: controller,
+              onTap: (index) {
+                controller.animateToPage(index,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut);
+              },
+            ),
+          ),
         );
       },
+    );
+  }
+}
+
+class _NavBar extends StatefulWidget {
+  const _NavBar({
+    required this.controller,
+    required this.onTap,
+  });
+
+  final PageController controller;
+  final void Function(int) onTap;
+
+  @override
+  State<_NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<_NavBar> {
+  int currentPage = 0;
+
+  @override
+  void initState() {
+    currentPage = widget.controller.page?.toInt() ?? 0;
+    widget.controller.addListener(
+      () => setState(() {
+        currentPage = widget.controller.page?.toInt() ?? currentPage;
+      }),
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.games),
+          label: 'List',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.collections),
+          label: 'Collections',
+        ),
+      ],
+      currentIndex: currentPage,
+      selectedItemColor: Colors.amber[800],
+      onTap: widget.onTap,
     );
   }
 }

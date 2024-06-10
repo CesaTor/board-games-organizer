@@ -1,39 +1,53 @@
+import 'package:bgo/src/core/models/collection_db_entry.dart';
 import 'package:bgo/src/features/game_collection_add/presentation/game_collection_add_provider.dart';
 import 'package:flutter/material.dart';
 
-class GameCollectionAdd extends StatelessWidget {
-  GameCollectionAdd({super.key});
+class GameCollectionAdd extends StatefulWidget {
+  const GameCollectionAdd({this.collection, super.key});
+  final CollectionDbEntry? collection;
 
-  final gameAddProvider = GameCollectionAddProvider()..init();
+  @override
+  State<GameCollectionAdd> createState() => _GameCollectionAddState();
+}
+
+class _GameCollectionAddState extends State<GameCollectionAdd> {
+  late GameCollectionAddProvider provider;
+  late TextEditingController nameController;
+
+  @override
+  void initState() {
+    provider = GameCollectionAddProvider(collection: widget.collection)..init();
+    nameController = TextEditingController(text: widget.collection?.name);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    String? name;
-
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Add Collection'),
+          title: Text(
+            widget.collection != null ? 'Edit Collection' : 'Add Collection',
+          ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(kToolbarHeight),
-            child: TextField(
-              onChanged: (value) => name = value,
-            ),
+            child: TextField(controller: nameController),
           ),
         ),
         body: ListenableBuilder(
-          listenable: gameAddProvider,
+          listenable: provider,
           builder: (context, child) => ListView.builder(
-            itemCount: gameAddProvider.gameList.length,
+            itemCount: provider.gameList.length,
             itemBuilder: (context, index) {
-              final game = gameAddProvider.gameList[index];
+              final game = provider.gameList[index];
               return GestureDetector(
                 onTap: () => Navigator.of(context).pop(game),
                 child: CheckboxListTile(
-                  value: gameAddProvider.selectedGames.contains(game),
+                  value: provider.contains(game),
                   title: Text(game.name ?? ''),
                   subtitle: Text(game.yearPublished.toString()),
                   onChanged: (bool? value) {
-                    gameAddProvider.select(game, value!);
+                    provider.select(game, value!);
                   },
                 ),
               );
@@ -42,9 +56,9 @@ class GameCollectionAdd extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if (name != null) {
-              gameAddProvider
-                  .save(name!)
+            if (nameController.text.isNotEmpty) {
+              provider
+                  .save(nameController.text)
                   .then((value) => Navigator.of(context).pop());
             }
           },

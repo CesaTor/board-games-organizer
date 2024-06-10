@@ -19,7 +19,13 @@ class GameCollections extends StatelessWidget {
             final collection = gameCollectionsProvider.collections[index];
             return GestureDetector(
               onTap: () async {
-                // TODO: collection view
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => GameCollectionAdd(
+                      collection: collection,
+                    ),
+                  ),
+                );
               },
               child: ListTile(
                 title: Text(collection.name ?? ''),

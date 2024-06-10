@@ -1,13 +1,9 @@
-import 'package:bgg_api/bgg_api.dart';
 import 'package:bgo/src/core/core.dart';
 
 class SaveLocalGame {
-  Future<bool> call(BoardGame game) async {
+  Future<bool> call(BoardGameDbEntry game) async {
     try {
-      await isar.writeTxn(
-        () => isar.boardGameDbEntrys.put(BoardGameDbEntry.fromBoardGame(game)),
-      );
-      return true;
+      return (await isar.writeTxn(() => isar.boardGameDbEntrys.put(game))) > 0;
     } catch (e) {
       return false;
     }
