@@ -40,24 +40,29 @@ class _CollectionAddState extends State<CollectionAdd> {
             ),
           ),
         ),
-        body: ListenableBuilder(
-          listenable: provider,
-          builder: (context, child) => ListView.builder(
-            itemCount: provider.gameList.length,
-            itemBuilder: (context, index) {
-              final game = provider.gameList[index];
-              return GestureDetector(
-                onTap: () => Navigator.of(context).pop(game),
-                child: CheckboxListTile(
-                  value: provider.contains(game),
-                  title: Text(game.name ?? ''),
-                  subtitle: Text(game.yearPublished.toString()),
-                  onChanged: (bool? value) {
-                    provider.select(game, value!);
-                  },
-                ),
-              );
-            },
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: ListenableBuilder(
+            listenable: provider,
+            builder: (context, child) => ListView.builder(
+              itemCount: provider.gameList.length,
+              itemBuilder: (context, index) {
+                final game = provider.gameList[index];
+                return GestureDetector(
+                  onTap: () => Navigator.of(context).pop(game),
+                  child: Card(
+                    child: CheckboxListTile(
+                      value: provider.contains(game),
+                      title: Text(game.name ?? ''),
+                      subtitle: Text(game.yearPublished.toString()),
+                      onChanged: (bool? value) {
+                        provider.select(game, value!);
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(

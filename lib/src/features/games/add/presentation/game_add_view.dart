@@ -14,32 +14,40 @@ class GameAdd extends StatelessWidget {
         title: const Text('Search Game'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: TextField(
-            onChanged: (query) {
-              EasyDebounce.debounce(
-                'game_search',
-                Durations.short2,
-                () => gameAddProvider.search(query),
-              );
-            },
-            autofocus: true,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: TextField(
+              onChanged: (query) {
+                EasyDebounce.debounce(
+                  'game_search',
+                  Durations.short2,
+                  () async => await gameAddProvider.search(query),
+                );
+              },
+              autofocus: true,
+            ),
           ),
         ),
       ),
-      body: ListenableBuilder(
-        listenable: gameAddProvider,
-        builder: (context, child) => ListView.builder(
-          itemCount: gameAddProvider.gameList.length,
-          itemBuilder: (context, index) {
-            final game = gameAddProvider.gameList[index];
-            return GestureDetector(
-              onTap: () => Navigator.of(context).pop(game),
-              child: ListTile(
-                title: Text(game.name ?? ''),
-                subtitle: Text(game.yearPublished.toString()),
-              ),
-            );
-          },
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: ListenableBuilder(
+          listenable: gameAddProvider,
+          builder: (context, child) => ListView.builder(
+            itemCount: gameAddProvider.gameList.length,
+            itemBuilder: (context, index) {
+              final game = gameAddProvider.gameList[index];
+              return GestureDetector(
+                onTap: () => Navigator.of(context).pop(game),
+                child: Card(
+                  child: ListTile(
+                    title: Text(game.name ?? ''),
+                    subtitle: Text(game.yearPublished.toString()),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

@@ -44,8 +44,10 @@ class Collections extends StatelessWidget {
                     ),
                   );
                 },
-                child: ListTile(
-                  title: Text(collection.name ?? ''),
+                child: Card(
+                  child: ListTile(
+                    title: Text(collection.name ?? ''),
+                  ),
                 ),
               ),
             );

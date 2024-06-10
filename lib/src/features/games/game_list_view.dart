@@ -41,21 +41,23 @@ class GameList extends StatelessWidget {
                     builder: (context) => GameDetail(game: game),
                   ),
                 ),
-                child: ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: CachedNetworkImage(
-                      imageUrl: game.thumbnail?.toString() ??
-                          "https://placehold.co/400",
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                child: Card(
+                  child: ListTile(
+                    leading: SizedBox(
+                      width: 100,
+                      child: CachedNetworkImage(
+                        imageUrl: game.thumbnail?.toString() ??
+                            "https://placehold.co/400",
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
                     ),
+                    title: Text(game.names.first),
+                    subtitle: Text(game.yearPublished.toString()),
                   ),
-                  title: Text(game.names.first),
-                  subtitle: Text(game.yearPublished.toString()),
                 ),
               ),
             );
