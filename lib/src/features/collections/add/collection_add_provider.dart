@@ -1,19 +1,17 @@
 import 'dart:collection';
 import 'package:bgo/src/core/core.dart';
-import 'package:bgo/src/core/models/collection_db_entry.dart';
-import 'package:bgo/src/features/game_collection_add/usecase/get_filtered_games.dart';
 import 'package:flutter/material.dart';
 
 bool _canSearch = true;
 
-class GameCollectionAddProvider extends ChangeNotifier {
+class CollectionAddProvider extends ChangeNotifier {
   /// Internal, private state of the cart.
   final List<BoardGameDbEntry> _games = [];
   final List<BoardGameDbEntry> _selectedGames = [];
   final _searchByName = GetFilteredGames();
   final CollectionDbEntry? collection;
 
-  GameCollectionAddProvider({this.collection});
+  CollectionAddProvider({this.collection});
 
   /// An unmodifiable view of the items in the cart.
   UnmodifiableListView<BoardGameDbEntry> get selectedGames =>
@@ -30,11 +28,13 @@ class GameCollectionAddProvider extends ChangeNotifier {
     _selectedGames.addAll(collection?.games ?? []);
     notifyListeners();
 
-    GetLocalGames()(sortByName: true).then((games) {
-      _games.clear();
-      _games.addAll(games);
-      notifyListeners();
-    });
+    GetLocalGames()(sortByName: true).listen(
+      (event) {
+        _games.clear();
+        _games.addAll(event);
+        notifyListeners();
+      },
+    );
   }
 
   void select(BoardGameDbEntry game, bool value) {

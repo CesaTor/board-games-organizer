@@ -1,5 +1,4 @@
 import 'package:bgo/src/core/core.dart';
-import 'package:bgo/src/core/models/collection_db_entry.dart';
 import 'package:isar/isar.dart';
 
 class GetGameCollections {

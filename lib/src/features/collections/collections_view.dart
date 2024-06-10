@@ -1,13 +1,13 @@
-import 'package:bgo/src/features/game_collection_add/presentation/game_collection_add_view.dart';
-import 'package:bgo/src/features/game_collections/presentation/game_collections_provider.dart';
-import 'package:bgo/src/features/game_collections/usecase/delete_local_collection.dart';
+import 'package:bgo/src/features/collections/add/collection_add_view.dart';
+import 'package:bgo/src/features/collections/collections_provider.dart';
+import 'package:bgo/src/core/usecase/delete_local_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class GameCollections extends StatelessWidget {
-  GameCollections({super.key});
+class Collections extends StatelessWidget {
+  Collections({super.key});
 
-  final gameCollectionsProvider = GameCollectionProvider()..init();
+  final gameCollectionsProvider = GameCollectionProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,7 @@ class GameCollections extends StatelessWidget {
                 children: [
                   SlidableAction(
                     onPressed: (_) {
-                      DeleteLocalCollection()
-                          .call(collection)
-                          .then((value) => gameCollectionsProvider.init());
+                      DeleteLocalCollection().call(collection);
                     },
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
@@ -40,12 +38,11 @@ class GameCollections extends StatelessWidget {
                 onTap: () async {
                   await Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => GameCollectionAdd(
+                      builder: (context) => CollectionAdd(
                         collection: collection,
                       ),
                     ),
                   );
-                  gameCollectionsProvider.init();
                 },
                 child: ListTile(
                   title: Text(collection.name ?? ''),
@@ -59,10 +56,9 @@ class GameCollections extends StatelessWidget {
         onPressed: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const GameCollectionAdd(),
+              builder: (context) => const CollectionAdd(),
             ),
           );
-          gameCollectionsProvider.init();
         },
         child: const Icon(Icons.add),
       ),

@@ -2,11 +2,11 @@ import 'package:bgo/src/core/core.dart';
 import 'package:isar/isar.dart';
 
 class GetLocalGames {
-  Future<Iterable<BoardGameDbEntry>> call({bool sortByName = false}) async {
+  Stream<Iterable<BoardGameDbEntry>> call({bool sortByName = false}) {
     if (sortByName) {
-      return (await isar.boardGameDbEntrys.where().sortByName().findAll());
+      return (isar.boardGameDbEntrys.where().sortByName().watch(fireImmediately: true));
     } else {
-      return (await isar.boardGameDbEntrys.where().findAll());
+      return (isar.boardGameDbEntrys.where().watch(fireImmediately: true));
     }
   }
 }

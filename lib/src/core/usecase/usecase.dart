@@ -1,5 +1,10 @@
+export 'delete_local_collection.dart';
+export 'delete_local_game.dart';
+export 'get_filtered_games.dart';
 export 'get_game_collections.dart';
+export 'get_game_info.dart';
 export 'get_local_collections.dart';
 export 'get_local_games.dart';
 export 'save_local_collection.dart';
 export 'save_local_game.dart';
+export 'search_by_name.dart';

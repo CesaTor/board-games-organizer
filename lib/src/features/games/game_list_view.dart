@@ -1,10 +1,6 @@
 import 'package:bgg_api/bgg_api.dart';
 import 'package:bgo/src/core/core.dart';
-import 'package:bgo/src/features/game_add/presentation/game_add_view.dart';
-import 'package:bgo/src/features/game_detail/presentation/game_detail_view.dart';
-import 'package:bgo/src/features/game_list/presentation/game_list_provider.dart';
-import 'package:bgo/src/features/game_list/usecase/delete_local_game.dart';
-import 'package:bgo/src/features/game_list/usecase/get_game_info.dart';
+import 'package:bgo/src/features/games/games.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -12,7 +8,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class GameList extends StatelessWidget {
   GameList({super.key});
 
-  final GameListProvider gameListProvider = GameListProvider()..init();
+  final GameListProvider gameListProvider = GameListProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +26,7 @@ class GameList extends StatelessWidget {
                 children: [
                   SlidableAction(
                     onPressed: (_) {
-                      DeleteLocalGame()
-                          .call(game)
-                          .then((value) => gameListProvider.init());
+                      DeleteLocalGame().call(game);
                     },
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,

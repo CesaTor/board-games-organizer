@@ -1,5 +1,5 @@
-import 'package:bgo/src/features/game_collections/presentation/game_collections_view.dart';
-import 'package:bgo/src/features/game_list/presentation/game_list_view.dart';
+import 'package:bgo/src/features/collections/collections_view.dart';
+import 'package:bgo/src/features/games/game_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
               controller: controller,
               children: [
                 GameList(),
-                GameCollections(),
+                Collections(),
               ],
             ),
             bottomNavigationBar: _NavBar(

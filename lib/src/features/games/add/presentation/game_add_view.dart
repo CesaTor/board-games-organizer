@@ -1,4 +1,4 @@
-import 'package:bgo/src/features/game_add/presentation/game_add_provider.dart';
+import 'package:bgo/src/features/games/add/presentation/game_add_provider.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 

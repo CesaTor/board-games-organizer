@@ -1,22 +1,22 @@
-import 'package:bgo/src/core/models/collection_db_entry.dart';
-import 'package:bgo/src/features/game_collection_add/presentation/game_collection_add_provider.dart';
+import 'package:bgo/src/core/core.dart';
+import 'package:bgo/src/features/collections/collections.dart';
 import 'package:flutter/material.dart';
 
-class GameCollectionAdd extends StatefulWidget {
-  const GameCollectionAdd({this.collection, super.key});
+class CollectionAdd extends StatefulWidget {
+  const CollectionAdd({this.collection, super.key});
   final CollectionDbEntry? collection;
 
   @override
-  State<GameCollectionAdd> createState() => _GameCollectionAddState();
+  State<CollectionAdd> createState() => _CollectionAddState();
 }
 
-class _GameCollectionAddState extends State<GameCollectionAdd> {
-  late GameCollectionAddProvider provider;
+class _CollectionAddState extends State<CollectionAdd> {
+  late CollectionAddProvider provider;
   late TextEditingController nameController;
 
   @override
   void initState() {
-    provider = GameCollectionAddProvider(collection: widget.collection)..init();
+    provider = CollectionAddProvider(collection: widget.collection)..init();
     nameController = TextEditingController(text: widget.collection?.name);
 
     super.initState();

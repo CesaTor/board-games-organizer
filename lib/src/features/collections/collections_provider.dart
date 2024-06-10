@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:bgo/src/core/models/collection_db_entry.dart';
@@ -9,11 +10,22 @@ class GameCollectionProvider extends ChangeNotifier {
 
   UnmodifiableListView<CollectionDbEntry> get collections =>
       UnmodifiableListView(_collections);
-  void init() {
-    GetLocalCollections()().then((collection) {
-      _collections.clear();
-      _collections.addAll(collection);
-      notifyListeners();
-    });
+
+  late final StreamSubscription<Iterable<CollectionDbEntry>> _sub;
+
+  GameCollectionProvider() {
+    _sub = GetLocalCollections()().listen(
+      (event) {
+        _collections.clear();
+        _collections.addAll(event);
+        notifyListeners();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _sub.cancel();
+    super.dispose();
   }
 }

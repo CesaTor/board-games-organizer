@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:bgg_api/bgg_api.dart';
-import 'package:bgo/src/features/game_list/usecase/search_by_name.dart';
+import 'package:bgo/src/core/usecase/search_by_name.dart';
 import 'package:flutter/material.dart';
 
 class GameAddProvider extends ChangeNotifier {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'package:bgo/src/core/core.dart';
 import 'package:flutter/material.dart';
@@ -10,27 +11,25 @@ class GameListProvider extends ChangeNotifier {
   UnmodifiableListView<BoardGameDbEntry> get games =>
       UnmodifiableListView(_games);
 
-  void init() {
-    GetLocalGames()().then((games) {
-      _games.clear();
-      _games.addAll(games);
-      notifyListeners();
-    });
-  }
+  late final StreamSubscription<Iterable<BoardGameDbEntry>> _sub;
 
-  void add(BoardGameDbEntry game) {
-    SaveLocalGame().call(game).then(
-      (success) {
-        if (success) {
-          _games.add(game);
-          notifyListeners();
-        }
+  GameListProvider() {
+    _sub = GetLocalGames()().listen(
+      (event) {
+        _games.clear();
+        _games.addAll(event);
+        notifyListeners();
       },
     );
   }
 
-  void removeAll() {
-    _games.clear();
-    notifyListeners();
+  void add(BoardGameDbEntry game) {
+    SaveLocalGame().call(game);
+  }
+
+  @override
+  void dispose() {
+    _sub.cancel();
+    super.dispose();
   }
 }
