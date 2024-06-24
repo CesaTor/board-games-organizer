@@ -1,5 +1,5 @@
 name: bgo
-description: "A new Flutter project."
+description: "Your personal board games organizer"
 
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
