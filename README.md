@@ -22,3 +22,8 @@ No special state management tool, I used BLoc and Riverpod but I wanted to try u
 - fpdart -> because I like it 
 
 As simple as that
+
+## TODO
+- [ ] Search local games
+- [ ] Filters (n. of players, age, time, ...)
+- [ ] You tell me!
