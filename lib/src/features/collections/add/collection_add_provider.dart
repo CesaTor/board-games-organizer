@@ -3,12 +3,12 @@ import 'package:bgo/src/core/core.dart';
 import 'package:flutter/material.dart';
 
 class CollectionAddProvider extends ChangeNotifier {
+  CollectionAddProvider({this.collection});
+
   /// Internal, private state of the cart.
   final List<BoardGameDbEntry> _games = [];
   final List<BoardGameDbEntry> _selectedGames = [];
   final CollectionDbEntry? collection;
-
-  CollectionAddProvider({this.collection});
 
   /// An unmodifiable view of the items in the cart.
   UnmodifiableListView<BoardGameDbEntry> get selectedGames =>
@@ -34,7 +34,7 @@ class CollectionAddProvider extends ChangeNotifier {
     );
   }
 
-  void select(BoardGameDbEntry game, bool value) {
+  void select(BoardGameDbEntry game, {bool value = true}) {
     if (value) {
       _selectedGames.add(game);
     } else {

@@ -13,18 +13,18 @@ class GameDetail extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text("${game.name} (${game.yearPublished})"),
+          title: Text('${game.name} (${game.yearPublished})'),
           bottom: game.thumbnail != null
               ? PreferredSize(
                   preferredSize: const Size.fromHeight(150),
                   child: Hero(
                     tag: game,
                     child: CachedNetworkImage(
-                      imageUrl: game.thumbnail!.toString(),
+                      imageUrl: game.thumbnail!,
                     ),
                   ),
                 )
-              : null),
+              : null,),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -39,28 +39,28 @@ class GameDetail extends StatelessWidget {
                     }
                     return Row(
                       children: [
-                        const Text("Place: ", style: titleStyle),
+                        const Text('Place: ', style: titleStyle),
                         for (final collection in snapshot.data!)
                           Text('${collection.name}, '),
                       ],
                     );
-                  }),
+                  },),
               Row(
                 children: [
-                  const Text("Players: ", style: titleStyle),
-                  Text("${game.minPlayers}-${game.maxPlayers}"),
+                  const Text('Players: ', style: titleStyle),
+                  Text('${game.minPlayers}-${game.maxPlayers}'),
                 ],
               ),
               Row(
                 children: [
-                  const Text("Age: ", style: titleStyle),
-                  Text("${game.minAge}+"),
+                  const Text('Age: ', style: titleStyle),
+                  Text('${game.minAge}+'),
                 ],
               ),
               Row(
                 children: [
-                  const Text("Playing Time: ", style: titleStyle),
-                  Text("${game.playingTime}+"),
+                  const Text('Playing Time: ', style: titleStyle),
+                  Text('${game.playingTime}+'),
                 ],
               ),
               const Text('Description:', style: titleStyle),

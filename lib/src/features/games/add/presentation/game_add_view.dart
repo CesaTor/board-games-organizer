@@ -15,13 +15,13 @@ class GameAdd extends StatelessWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               onChanged: (query) {
                 EasyDebounce.debounce(
                   'game_search',
                   Durations.short2,
-                  () async => await gameAddProvider.search(query),
+                  () => gameAddProvider.search(query),
                 );
               },
               autofocus: true,

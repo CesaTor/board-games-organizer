@@ -9,7 +9,7 @@ class DeleteLocalCollection {
       return (await isar.writeTxn(() => isar.collectionDbEntrys
               .where()
               .idEqualTo(collection.id)
-              .deleteAll())) >=
+              .deleteAll(),)) >=
           1;
     } catch (e) {
       return false;

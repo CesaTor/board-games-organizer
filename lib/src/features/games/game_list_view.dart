@@ -47,7 +47,7 @@ class GameList extends StatelessWidget {
                       width: 100,
                       child: CachedNetworkImage(
                         imageUrl: game.thumbnail?.toString() ??
-                            "https://placehold.co/400",
+                            'https://placehold.co/400',
                         placeholder: (context, url) =>
                             const Center(child: CircularProgressIndicator()),
                         fit: BoxFit.cover,

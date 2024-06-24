@@ -6,12 +6,6 @@ import 'package:bgo/src/core/usecase/get_local_collections.dart';
 import 'package:flutter/material.dart';
 
 class GameCollectionProvider extends ChangeNotifier {
-  final List<CollectionDbEntry> _collections = [];
-
-  UnmodifiableListView<CollectionDbEntry> get collections =>
-      UnmodifiableListView(_collections);
-
-  late final StreamSubscription<Iterable<CollectionDbEntry>> _sub;
 
   GameCollectionProvider() {
     _sub = GetLocalCollections()().listen(
@@ -22,6 +16,12 @@ class GameCollectionProvider extends ChangeNotifier {
       },
     );
   }
+  final List<CollectionDbEntry> _collections = [];
+
+  UnmodifiableListView<CollectionDbEntry> get collections =>
+      UnmodifiableListView(_collections);
+
+  late final StreamSubscription<Iterable<CollectionDbEntry>> _sub;
 
   @override
   void dispose() {

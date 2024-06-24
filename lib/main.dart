@@ -1,13 +1,12 @@
+import 'package:bgo/src/app.dart';
 import 'package:bgo/src/core/global.dart';
 import 'package:bgo/src/core/models/board_game_db_entry.dart';
 import 'package:bgo/src/core/models/collection_db_entry.dart';
+import 'package:bgo/src/settings/settings_controller.dart';
+import 'package:bgo/src/settings/settings_service.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'src/app.dart';
-import 'src/settings/settings_controller.dart';
-import 'src/settings/settings_service.dart';
 
 void main() async {
   final settingsController = SettingsController(SettingsService());

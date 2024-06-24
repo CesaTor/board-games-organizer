@@ -25,55 +25,56 @@ class _CollectionAddState extends State<CollectionAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.collection != null ? 'Edit Collection' : 'Add Collection',
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(kToolbarHeight),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextField(
-                controller: nameController,
-                autofocus: true,
-              ),
+      appBar: AppBar(
+        title: Text(
+          widget.collection != null ? 'Edit Collection' : 'Add Collection',
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              controller: nameController,
+              autofocus: true,
             ),
           ),
         ),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: ListenableBuilder(
-            listenable: provider,
-            builder: (context, child) => ListView.builder(
-              itemCount: provider.gameList.length,
-              itemBuilder: (context, index) {
-                final game = provider.gameList[index];
-                return GestureDetector(
-                  onTap: () => Navigator.of(context).pop(game),
-                  child: Card(
-                    child: CheckboxListTile(
-                      value: provider.contains(game),
-                      title: Text(game.name ?? ''),
-                      subtitle: Text(game.yearPublished.toString()),
-                      onChanged: (bool? value) {
-                        provider.select(game, value!);
-                      },
-                    ),
+      ),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: ListenableBuilder(
+          listenable: provider,
+          builder: (context, child) => ListView.builder(
+            itemCount: provider.gameList.length,
+            itemBuilder: (context, index) {
+              final game = provider.gameList[index];
+              return GestureDetector(
+                onTap: () => Navigator.of(context).pop(game),
+                child: Card(
+                  child: CheckboxListTile(
+                    value: provider.contains(game),
+                    title: Text(game.name ?? ''),
+                    subtitle: Text(game.yearPublished.toString()),
+                    onChanged: (bool? value) {
+                      if (value != null) provider.select(game, value: value);
+                    },
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            if (nameController.text.isNotEmpty) {
-              provider
-                  .save(nameController.text)
-                  .then((value) => Navigator.of(context).pop());
-            }
-          },
-          child: const Icon(Icons.check),
-        ));
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (nameController.text.isNotEmpty) {
+            provider
+                .save(nameController.text)
+                .then((value) => Navigator.of(context).pop());
+          }
+        },
+        child: const Icon(Icons.check),
+      ),
+    );
   }
 }

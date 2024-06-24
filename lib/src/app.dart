@@ -1,19 +1,18 @@
 import 'package:bgo/src/features/collections/collections_view.dart';
 import 'package:bgo/src/features/games/game_list_view.dart';
+import 'package:bgo/src/settings/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'settings/settings_controller.dart';
-
 /// The Widget that configures your application.
 class MyApp extends StatefulWidget {
   const MyApp({
-    super.key,
     required this.settingsController,
+    super.key,
   });
 
-  final SettingsController settingsController; 
+  final SettingsController settingsController;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -24,7 +23,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    controller = PageController(initialPage: 0, keepPage: true);
+    controller = PageController();
     super.initState();
   }
 
@@ -60,9 +59,11 @@ class _MyAppState extends State<MyApp> {
             bottomNavigationBar: _NavBar(
               controller: controller,
               onTap: (index) {
-                controller.animateToPage(index,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeInOut);
+                controller.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut,
+                );
               },
             ),
           ),
