@@ -2,13 +2,10 @@ import 'dart:collection';
 import 'package:bgo/src/core/core.dart';
 import 'package:flutter/material.dart';
 
-bool _canSearch = true;
-
 class CollectionAddProvider extends ChangeNotifier {
   /// Internal, private state of the cart.
   final List<BoardGameDbEntry> _games = [];
   final List<BoardGameDbEntry> _selectedGames = [];
-  final _searchByName = GetFilteredGames();
   final CollectionDbEntry? collection;
 
   CollectionAddProvider({this.collection});
@@ -52,24 +49,5 @@ class CollectionAddProvider extends ChangeNotifier {
     c.games.addAll(_selectedGames);
 
     await SaveLocalCollection()(c);
-  }
-
-  Future<void> search(String name) async {
-    if (_canSearch) {
-      _canSearch = false;
-      Future.delayed(const Duration(milliseconds: 300), () async {
-        final v = await _searchByName(name);
-        _games.clear();
-        _games.addAll(v);
-        notifyListeners();
-        _canSearch = true;
-      });
-    }
-
-    _searchByName(name).then((value) {
-      _games.clear();
-      _games.addAll(value);
-      notifyListeners();
-    });
   }
 }
