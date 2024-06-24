@@ -1,6 +1,4 @@
-# bgo
-
-Simple BoardGame Organizer
+# bgo - BoardGames Organizer
 
 ## Why
 
