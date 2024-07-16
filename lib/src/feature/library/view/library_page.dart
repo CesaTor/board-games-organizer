@@ -2,6 +2,7 @@ import 'package:bgo/src/core/core.dart';
 import 'package:bgo/src/feature/feature.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 
 class LibraryPage extends StatelessWidget {
@@ -15,6 +16,7 @@ class LibraryPage extends StatelessWidget {
       create: (context) => LibraryBloc(
         GetCollections(context.read()),
         InsertCollection(context.read()),
+        DeleteCollection(context.read()),
       )..add(LibraryInit()),
       child: const _LibraryPageView(),
     );
@@ -55,9 +57,27 @@ class _LibraryPageView extends StatelessWidget {
             itemCount: collections.length,
             itemBuilder: (context, index) {
               final collection = collections[index];
-              return ListTile(
-                title: Text(collection.name),
-                subtitle: Text(collection.description),
+              return Slidable(
+                endActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (ctx) {
+                        context
+                            .read<LibraryBloc>()
+                            .add(LibraryDelete(collection.id));
+                      },
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      icon: Icons.remove,
+                      label: 'Remove',
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  title: Text(collection.name),
+                  subtitle: Text(collection.description),
+                ),
               );
             },
           );

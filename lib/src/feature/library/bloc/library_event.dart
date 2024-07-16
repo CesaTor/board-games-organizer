@@ -30,12 +30,12 @@ final class LibrarySelect extends LibraryEvent {
 }
 
 final class LibraryDelete extends LibraryEvent {
-  const LibraryDelete(this.collection);
+  const LibraryDelete(this.collectionId);
 
-  final BGOCollection collection;
+  final int collectionId;
 
   @override
-  List<Object> get props => [collection];
+  List<Object> get props => [collectionId];
 }
 
 final class LibraryAdd extends LibraryEvent {
