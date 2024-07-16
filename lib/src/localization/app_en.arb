@@ -1,6 +1,10 @@
 {
+  "@@locale": "en",
   "appTitle": "bgo",
   "@appTitle": {
     "description": "The title of the application"
-  }
+  },
+  "navbar_library": "Library",
+  "navbar_search": "Search",
+  "navbar_settings": "Settings"
 }
